@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # Banco de Dados PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: ubs-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ubs_user
+      POSTGRES_PASSWORD: ubs_password
+      POSTGRES_DB: expense_manager_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Ferramenta visual para ver o banco (Opcional, mas ajuda muito o time)
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: ubs-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@ubs.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
